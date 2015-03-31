@@ -12,14 +12,15 @@
 - (void) authenticate:(CDVInvokedUrlCommand*)command;
 {
     NSString *text = [command.arguments objectAtIndex:0];
-
+    
     __block CDVPluginResult* pluginResult = nil;
-
+    
     if (NSClassFromString(@"LAContext") != nil)
     {
+        
         LAContext *laContext = [[LAContext alloc] init];
         NSError *authError = nil;
-
+        
         if ([laContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&authError])
         {
             [laContext evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:text reply:^(BOOL success, NSError *error)
@@ -30,15 +31,15 @@
                  }
                  else
                  {
-                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
+                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"%li",(long)error.code]];
                  }
-
+                 
                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
              }];
         }
         else
         {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[authError localizedDescription]];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"%li",(long)authError.code]];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }
     }
@@ -51,28 +52,28 @@
 
 - (void) checkSupport:(CDVInvokedUrlCommand*)command;
 {
-
+    
     __block CDVPluginResult* pluginResult = nil;
-
+    
     if (NSClassFromString(@"LAContext") != nil)
     {
         LAContext *laContext = [[LAContext alloc] init];
         NSError *authError = nil;
-
+        
         if ([laContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&authError])
         {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         }
         else
         {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[authError localizedDescription]];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[NSString stringWithFormat:@"%li",(long)authError.code]];
         }
     }
     else
     {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
-
+    
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 

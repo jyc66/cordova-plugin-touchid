@@ -1,21 +1,17 @@
 ## Touch ID Plugin for Apache Cordova
 
+**Important:** Forked from https://github.com/leecrossley/cordova-plugin-touchid.git to use error codes instead of localized error messages.
+
 Cordova Plugin to leverage the iOS local authentication framework to allow in-app user authentication using Touch ID.
 
 **Important:** You must target a real device when building. If you target the simulator, the build will fail.
 
 ## 1 step install
 
-#### Latest published version
-
-```
-cordova plugin add uk.co.ilee.touchid
-```
-
 #### Latest version from GitHub
 
 ```
-cordova plugin add https://github.com/leecrossley/cordova-plugin-touchid.git
+cordova plugin add https://github.com/jyc66/cordova-plugin-touchid.git
 ```
 
 ## Usage
